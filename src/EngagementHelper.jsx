@@ -1,9 +1,12 @@
+//Helper funtion to generate options for the highchart component
 class EngagementHelper {
   engagementMessageOverTimeChartOptions(messageCountList, channels) {
     const setOfChannels = [
       ...new Set(messageCountList.map((item) => item.channelId)),
     ];
     let validChannels = [];
+    let chart, title, tooltip, yAxis, xAxis, series, options;
+
     //We will loop over the set of channels in the messageCountList and find out which ones are having occurences more than once in the array
     //This will get rid of the channels that don't have messages on more than one date
     setOfChannels.forEach((channel) => {
@@ -15,18 +18,18 @@ class EngagementHelper {
     });
 
     //We are setting up the axes now
-    let chart, title, tooltip, yAxis, xAxis, series, options;
     chart = { type: "spline" };
     title = { text: "Messages over Time" };
     tooltip = {
       formatter: function () {
         return `<b>${this.series.name}</b></br>${this.y} message${
-          this.y > 1 ? "s" :""
+          this.y > 1 ? "s" : ""
         } on ${this.x.getDate()} ${this.x.toLocaleString("default", {
           month: "short",
         })}`;
       },
     };
+
     //Setting the title of the y-axis
     yAxis = {
       title: {
@@ -37,6 +40,7 @@ class EngagementHelper {
     xAxis = {
       type: "datetime",
     };
+
     //Setting the series data
     series = validChannels.map((channel) => {
       let msgs = messageCountList.filter((msg) => msg.channelId == channel);
@@ -48,7 +52,10 @@ class EngagementHelper {
       }));
       return { name, data };
     });
+
+    //Creating the options parameter for the chart
     options = { chart, title, tooltip, yAxis, xAxis, series };
+    
     return options;
   }
 }
