@@ -20,9 +20,9 @@ class EngagementHelper {
     title = { text: "Messages over Time" };
     tooltip = {
       formatter: function () {
-        return `<b>${this.series.name}</b></br>${
-          this.y
-        } messages on ${this.x.getDate()} ${this.x.toLocaleString("default", {
+        return `<b>${this.series.name}</b></br>${this.y} message${
+          this.y > 1 ? "s" :""
+        } on ${this.x.getDate()} ${this.x.toLocaleString("default", {
           month: "short",
         })}`;
       },
